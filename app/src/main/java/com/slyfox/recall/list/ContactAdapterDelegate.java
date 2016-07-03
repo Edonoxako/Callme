@@ -22,10 +22,12 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Eugene on 25.06.2016.
+ *
+ * This delegate handles presentation of a single ContactModel in the RecyclerView
  */
 public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel>> {
 
-    private LayoutInflater inflater;
+    private LayoutInflater inflater; //is needed to inflate view for list item
     private Context context;
 
     public ContactAdapterDelegate(Activity activity) {
@@ -35,6 +37,7 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
 
     @Override
     public boolean isForViewType(@NonNull List<ContactModel> items, int position) {
+        //We don't have any other item types, so just ensure that item is not null
         return items.get(position) != null;
     }
 
@@ -49,9 +52,15 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
         ContactViewHolder cvh = (ContactViewHolder) holder;
         ContactModel model = items.get(position);
 
-        cvh.contactNameView.setText(model.getName());
-        cvh.contactNumberView.setText(model.getNumbers().get(0));
+        cvh.contactNameView.setText(model.getName()); //set contact name
 
+        List<String> numbers = model.getNumbers();
+        if (!numbers.isEmpty())
+            cvh.contactNumberView.setText(model.getNumbers().get(0)); //set first of the user's numbers
+        else
+            cvh.contactNumberView.setText("No phone numbers"); //set stub text
+
+        //Set listener to handle "Ask for call" button click
         cvh.askForCallView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +68,7 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
             }
         });
 
+        //Set listener to handle "Ask for money" button click
         cvh.askForMoneyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +90,7 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
 
         public ContactViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, itemView); //we use ButterKnife to get all item's views
         }
     }
 }

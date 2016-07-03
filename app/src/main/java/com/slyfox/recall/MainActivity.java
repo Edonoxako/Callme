@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.slyfox.recall.list.ContactListAdapter;
+import com.slyfox.recall.manager.ContactLoadingManager;
 import com.slyfox.recall.model.ContactModel;
 
 import java.util.ArrayList;
@@ -14,10 +15,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ContactLoadingManager.OnContactsLoadedCallback {
 
     @BindView(R.id.contactList)
     RecyclerView contactList;
+
+    private ContactLoadingManager contactManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,24 +28,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        ContactListAdapter adapter = new ContactListAdapter(this, getContacts());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        contactList.setAdapter(adapter);
         contactList.setLayoutManager(layoutManager);
+
+        contactManager = new ContactLoadingManager(this);
+        contactManager.loadContacts(this);
     }
 
-    private List<ContactModel> getContacts() {
-        List<ContactModel> models = new ArrayList<>();
-        List<String> numbers = new ArrayList<>();
-
-        numbers.add("+71234567890");
-
-        models.add(new ContactModel(0, "User 1", numbers));
-        models.add(new ContactModel(1, "User 2", numbers));
-        models.add(new ContactModel(2, "User 3", numbers));
-        models.add(new ContactModel(3, "User 4", numbers));
-
-        return models;
+    @Override
+    public void onContactsLoaded(List<ContactModel> contacts) {
+        ContactListAdapter adapter = new ContactListAdapter(this, contacts);
+        contactList.swapAdapter(adapter, true);
     }
 }

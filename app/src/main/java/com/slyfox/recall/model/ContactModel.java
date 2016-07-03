@@ -1,15 +1,18 @@
 package com.slyfox.recall.model;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Eugene on 25.06.2016.
+ *
+ * Model class for contact
  */
 public class ContactModel {
 
     private long id;
     private String name;
-    private List<String> numbers;
+    private List<String> numbers; //contact is able to have multiple numbers
 
     public ContactModel(long id, String name, List<String> numbers) {
         this.id = id;
@@ -26,7 +29,8 @@ public class ContactModel {
     }
 
     public List<String> getNumbers() {
-        return numbers;
+        if (numbers != null) return numbers;
+        else return Collections.emptyList();
     }
 
     @Override
