@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hannesdorfmann.adapterdelegates2.AdapterDelegate;
 import com.slyfox.recall.model.ContactModel;
@@ -27,12 +26,21 @@ import butterknife.ButterKnife;
  */
 public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel>> {
 
+    public static final int ASK_FOR_CALL_BUTTON = 0;
+    public static final int ASK_FOR_MONEY_BUTTON = 1;
+
+    public interface AskButtonListener {
+        void onAskButtonClick(int button, long contactId);
+    }
+
     private LayoutInflater inflater; //is needed to inflate view for list item
     private Context context;
+    private AskButtonListener listener;
 
-    public ContactAdapterDelegate(Activity activity) {
-        inflater = activity.getLayoutInflater();
-        context = activity;
+    public ContactAdapterDelegate(Activity activity, AskButtonListener listener) {
+        this.inflater = activity.getLayoutInflater();
+        this.context = activity;
+        this.listener = listener;
     }
 
     @Override
@@ -50,21 +58,15 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
     @Override
     public void onBindViewHolder(@NonNull List<ContactModel> items, int position, @NonNull RecyclerView.ViewHolder holder) {
         ContactViewHolder cvh = (ContactViewHolder) holder;
-        ContactModel model = items.get(position);
+        final ContactModel model = items.get(position);
 
         cvh.contactNameView.setText(model.getName()); //set contact name
-
-        List<String> numbers = model.getNumbers();
-        if (!numbers.isEmpty())
-            cvh.contactNumberView.setText(model.getNumbers().get(0)); //set first of the user's numbers
-        else
-            cvh.contactNumberView.setText("No phone numbers"); //set stub text
 
         //Set listener to handle "Ask for call" button click
         cvh.askForCallView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Ask for call", Toast.LENGTH_SHORT).show();
+                listener.onAskButtonClick(ASK_FOR_CALL_BUTTON, model.getId());
             }
         });
 
@@ -72,7 +74,7 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
         cvh.askForMoneyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Ask for money", Toast.LENGTH_SHORT).show();
+                listener.onAskButtonClick(ASK_FOR_MONEY_BUTTON, model.getId());
             }
         });
     }
@@ -81,8 +83,6 @@ public class ContactAdapterDelegate implements AdapterDelegate<List<ContactModel
 
         @BindView(R.id.contactNameView)
         TextView contactNameView;
-        @BindView(R.id.contactNumberView)
-        TextView contactNumberView;
         @BindView(R.id.askCallButton)
         ImageView askForCallView;
         @BindView(R.id.askMoneyButton)

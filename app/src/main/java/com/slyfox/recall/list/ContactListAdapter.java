@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class ContactListAdapter extends ListDelegationAdapter<List<ContactModel>> {
 
-    public ContactListAdapter(Activity activity, List<ContactModel> contacts) {
+    public ContactListAdapter(List<ContactModel> contacts, ContactAdapterDelegate delegate) {
         //Add ContactAdapterDelegate to DelegateManager to delegate list item managing to it
-        delegatesManager.addDelegate(new ContactAdapterDelegate(activity));
+        delegatesManager.addDelegate(delegate);
         setItems(contacts); //Keep contacts in adapter
     }
 }
