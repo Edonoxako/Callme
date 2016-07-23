@@ -8,8 +8,9 @@ import android.widget.Toast;
 
 import com.slyfox.recall.list.ContactAdapterDelegate;
 import com.slyfox.recall.list.ContactListAdapter;
-import com.slyfox.recall.manager.AllContactsCallback;
-import com.slyfox.recall.manager.ContactLoadingManager;
+import com.slyfox.recall.manager.MobileOperatorManager;
+import com.slyfox.recall.manager.loading.AllContactsCallback;
+import com.slyfox.recall.manager.loading.ContactLoadingManager;
 import com.slyfox.recall.manager.RequestManager;
 import com.slyfox.recall.model.ContactModel;
 import com.slyfox.recall.repository.ContactsRepository;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements
         contactList.setLayoutManager(layoutManager);
 
         contactManager = new ContactLoadingManager(this);
-        requestManager = new RequestManager(this, contactManager);
+        requestManager = new RequestManager(this, contactManager, new MobileOperatorManager());
 
         contactManager.loadContacts(this);
     }

@@ -3,7 +3,11 @@ package com.slyfox.recall.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.slyfox.recall.manager.loading.ContactLoadingManager;
+import com.slyfox.recall.manager.loading.SingleContactsCallback;
 import com.slyfox.recall.model.ContactModel;
+
+import java.util.List;
 
 /**
  * Created by Eugene on 09.07.2016.
@@ -14,10 +18,12 @@ public class RequestManager implements SingleContactsCallback.OnSingleContactLoa
 
     private Context context;
     private ContactLoadingManager loadingManager;
+    private MobileOperatorManager operatorManager;
 
-    public RequestManager(Context context, ContactLoadingManager loadingManager) {
+    public RequestManager(Context context, ContactLoadingManager loadingManager, MobileOperatorManager operatorManager) {
         this.context = context;
         this.loadingManager = loadingManager;
+        this.operatorManager = operatorManager;
     }
 
     public void startCallAskingFlow(long userId) {
@@ -30,10 +36,22 @@ public class RequestManager implements SingleContactsCallback.OnSingleContactLoa
 
     @Override
     public void onSingleContactLoaded(ContactModel contact) {
-        if (contact == null) {
-            Log.e(TAG, "onSingleContactLoaded: no contact obtained");
+        if (contact == null || contact.getNumbers() == null) {
             return;
         }
-        Log.d(TAG, "onSingleContactLoaded: " + contact);
+
+        if (contact.getNumbers().size() > 1) {
+            showChooseNumberDialog(contact.getNumbers());
+        } else {
+            createAndSendRequest(contact.getNumbers().get(0));
+        }
+    }
+
+    public void showChooseNumberDialog(List<String> numbers) {
+
+    }
+
+    public void createAndSendRequest(String number) {
+
     }
 }

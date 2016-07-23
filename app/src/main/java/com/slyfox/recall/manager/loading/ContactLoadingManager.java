@@ -1,4 +1,4 @@
-package com.slyfox.recall.manager;
+package com.slyfox.recall.manager.loading;
 
 import android.support.v7.app.AppCompatActivity;
 

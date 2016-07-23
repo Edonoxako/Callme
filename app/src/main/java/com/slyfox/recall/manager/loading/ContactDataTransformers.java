@@ -1,4 +1,4 @@
-package com.slyfox.recall.manager;
+package com.slyfox.recall.manager.loading;
 
 import android.database.Cursor;
 import android.provider.ContactsContract;

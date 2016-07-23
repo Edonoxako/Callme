@@ -1,4 +1,4 @@
-package com.slyfox.recall.manager;
+package com.slyfox.recall.manager.loading;
 
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -10,8 +10,6 @@ import com.getbase.android.db.loaders.CursorLoaderBuilder;
 import com.slyfox.recall.model.ContactModel;
 
 import java.util.List;
-
-import static com.slyfox.recall.manager.ContactDataTransformers.ROW_TO_CONTACT_MODEL;
 
 /**
  * Created by Eugene on 17.07.2016.
@@ -39,7 +37,7 @@ public class AllContactsCallback implements LoaderManager.LoaderCallbacks<List<C
             return CursorLoaderBuilder.forUri(ContactsContract.Contacts.CONTENT_URI)
                     .projection(ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
                     .where(ContactsContract.Contacts.HAS_PHONE_NUMBER + " = ?", 1) //we only need contacts that have phone numbers
-                    .transformRow(ROW_TO_CONTACT_MODEL) //transform from cursor to list
+                    .transformRow(ContactDataTransformers.ROW_TO_CONTACT_MODEL) //transform from cursor to list
                     .lazy() //there could be a lot of contacts, so we should load it only if we need it
                     .build(activity);
         } else {

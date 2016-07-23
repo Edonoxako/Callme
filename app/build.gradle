@@ -22,8 +22,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Tests dependencies
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
     compile 'com.android.support:appcompat-v7:24.0.0'
+
     //Library for using recycler view adapter using composition
     compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
     //Butterknife, UI injection

@@ -1,6 +1,5 @@
-package com.slyfox.recall.manager;
+package com.slyfox.recall.manager.loading;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager;
@@ -10,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.getbase.android.db.loaders.CursorLoaderBuilder;
 import com.slyfox.recall.model.ContactModel;
 
-import static com.slyfox.recall.manager.ContactDataTransformers.TO_CONTACT_MODEL;
+import static com.slyfox.recall.manager.loading.ContactDataTransformers.TO_CONTACT_MODEL;
 
 /**
  * Created by Eugene on 17.07.2016.
