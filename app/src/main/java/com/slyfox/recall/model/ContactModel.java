@@ -8,7 +8,7 @@ import java.util.List;
  *
  * Model class for contact
  */
-public class ContactModel {
+public class ContactModel extends Contact {
 
     private long id;
     private String name;

@@ -1,4 +1,4 @@
-package com.slyfox.recall;
+package com.slyfox.recall.domain;
 
 /**
  * Created by Eugene on 23.07.2016.

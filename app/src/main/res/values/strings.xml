@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Recall</string>
+    <string name="qualifier_title">Choose number</string>
 </resources>

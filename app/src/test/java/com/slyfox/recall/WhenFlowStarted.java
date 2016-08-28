@@ -1,5 +1,11 @@
 package com.slyfox.recall;
 
+import com.slyfox.recall.domain.AskingRequestBuilder;
+import com.slyfox.recall.domain.FlowManager;
+import com.slyfox.recall.domain.INumberQualifier;
+import com.slyfox.recall.domain.IPhone;
+import com.slyfox.recall.domain.RequestType;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

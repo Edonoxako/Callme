@@ -1,5 +1,12 @@
 package com.slyfox.recall;
 
+import com.slyfox.recall.domain.ContactPresenter;
+import com.slyfox.recall.domain.FlowManager;
+import com.slyfox.recall.domain.IContactLoader;
+import com.slyfox.recall.domain.IContactView;
+import com.slyfox.recall.domain.RequestType;
+import com.slyfox.recall.model.Contact;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

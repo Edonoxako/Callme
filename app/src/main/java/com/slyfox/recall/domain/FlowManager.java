@@ -1,4 +1,4 @@
-package com.slyfox.recall;
+package com.slyfox.recall.domain;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import java.util.List;
  * Created by Eugene on 23.07.2016.
  */
 public class FlowManager implements INumberQualifier.Callback {
-    private AskingRequestBuilder builder;
-    private INumberQualifier numberQualifier;
+    private AskingRequestBuilder builder; //builds requests aka *144*<number>#
+    private INumberQualifier numberQualifier; //is used to let user to specify the exact number if he has more then one
     private IPhone phone;
 
-    private RequestType flowType;
+    private RequestType flowType; //MONEY or CALL
 
     public FlowManager(AskingRequestBuilder builder, INumberQualifier numberQualifier, IPhone phone) {
         this.builder = builder;

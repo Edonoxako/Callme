@@ -1,4 +1,4 @@
-package com.slyfox.recall;
+package com.slyfox.recall.domain;
 
 import java.util.Collection;
 

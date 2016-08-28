@@ -54,4 +54,11 @@ public class ContactDataTransformers {
         }
     };
 
+    public static final Function<Cursor, String> ROW_TO_NUMBER_STRING = new Function<Cursor, String>() {
+        @Override
+        public String apply(Cursor input) {
+            return input.getString(input.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+    };
+
 }

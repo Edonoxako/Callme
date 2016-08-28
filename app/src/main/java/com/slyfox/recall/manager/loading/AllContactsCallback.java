@@ -7,6 +7,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import com.getbase.android.db.loaders.CursorLoaderBuilder;
+import com.slyfox.recall.domain.IContactLoader;
 import com.slyfox.recall.model.ContactModel;
 
 import java.util.List;
@@ -18,17 +19,12 @@ public class AllContactsCallback implements LoaderManager.LoaderCallbacks<List<C
 
     public static final int LOADER_ID = 0; //loader id
 
-    //This contactsCallback is used, when we need to return loading result
-    public interface OnContactsLoadedCallback {
-        void onContactsLoaded(List<ContactModel> contacts);
-    }
-
     private AppCompatActivity activity;
-    private OnContactsLoadedCallback contactsCallback;
+    private IContactLoader.ContactsCallback loaderContactcCallback;
 
-    public AllContactsCallback(AppCompatActivity activity, OnContactsLoadedCallback contactsCallback) {
+    public AllContactsCallback(AppCompatActivity activity, IContactLoader.ContactsCallback loaderContactcCallback) {
         this.activity = activity;
-        this.contactsCallback = contactsCallback; //keeps contactsCallback to invoke it when data loading is finished
+        this.loaderContactcCallback = loaderContactcCallback;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class AllContactsCallback implements LoaderManager.LoaderCallbacks<List<C
     @Override
     public void onLoadFinished(Loader<List<ContactModel>> loader, List<ContactModel> data) {
         //There MUST be contactsCallback to return loading result
-        if (contactsCallback != null) contactsCallback.onContactsLoaded(data);
+        if (loaderContactcCallback != null) loaderContactcCallback.onContactsLoaded(data);
         else throw new IllegalStateException("No contactsCallback found!");
     }
 

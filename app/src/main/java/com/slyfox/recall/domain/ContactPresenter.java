@@ -1,4 +1,6 @@
-package com.slyfox.recall;
+package com.slyfox.recall.domain;
+
+import com.slyfox.recall.model.Contact;
 
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class ContactPresenter implements IContactLoader.ContactsCallback, IConta
     }
 
     @Override
-    public void onContactsLoaded(List<Contact> contacts) {
+    public void onContactsLoaded(List<? extends Contact> contacts) {
         contactView.showContacts(contacts);
     }
 

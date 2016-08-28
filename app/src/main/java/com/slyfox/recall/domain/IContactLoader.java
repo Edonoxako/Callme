@@ -1,6 +1,7 @@
-package com.slyfox.recall;
+package com.slyfox.recall.domain;
 
-import java.util.Collection;
+import com.slyfox.recall.model.Contact;
+
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
 public interface IContactLoader {
 
     interface ContactsCallback {
-        void onContactsLoaded(List<Contact> contacts);
+        void onContactsLoaded(List<? extends Contact> contacts);
     }
 
     interface NumbersCallback {
