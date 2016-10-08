@@ -1,9 +1,12 @@
 package com.slyfox.recall;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
@@ -12,9 +15,12 @@ import com.slyfox.recall.domain.ContactPresenter;
 import com.slyfox.recall.domain.FlowManager;
 import com.slyfox.recall.domain.IContactView;
 import com.slyfox.recall.domain.INumberQualifier;
+import com.slyfox.recall.domain.permissions.IPermissionView;
+import com.slyfox.recall.domain.permissions.PermissionsPresenterProxy;
 import com.slyfox.recall.list.ContactAdapterDelegate;
 import com.slyfox.recall.list.ContactListAdapter;
 import com.slyfox.recall.manager.DialogQualifier;
+import com.slyfox.recall.manager.permissions.DynamicPermissionManager;
 import com.slyfox.recall.manager.Phone;
 import com.slyfox.recall.manager.loading.ContactLoadingManager;
 import com.slyfox.recall.model.Contact;
@@ -27,10 +33,13 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements
         ContactAdapterDelegate.AskButtonListener,
-        IContactView {
+        IContactView,
+        IPermissionView {
 
     @BindView(R.id.contactList)
     RecyclerView contactList;
+    @BindView(R.id.mainActivity)
+    View activityView;
 
     private ContactPresenter presenter;
 
@@ -48,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements
         ContactLoadingManager contactManager = new ContactLoadingManager(this);
         INumberQualifier qualifier = DialogQualifier.create(getSupportFragmentManager());
         FlowManager flowManager = new FlowManager(new AskingRequestBuilder(), qualifier, new Phone(this));
-        presenter = new ContactPresenter(this, contactManager, flowManager);
+        ContactPresenter contactPresenter = new ContactPresenter(this, contactManager, flowManager);
+        presenter = new PermissionsPresenterProxy(contactPresenter, new DynamicPermissionManager(this, activityView), this);
 
         //Load all contacts
         presenter.loadContacts();
@@ -78,5 +88,17 @@ public class MainActivity extends AppCompatActivity implements
                 .toList(),
                 delegate);
         contactList.swapAdapter(adapter, true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (presenter instanceof PermissionsPresenterProxy) {
+            ((PermissionsPresenterProxy) presenter).onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void showPermissionsDeniedMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

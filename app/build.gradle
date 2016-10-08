@@ -36,4 +36,8 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
     //android-db-commons, simple db and loaders
     compile 'com.getbase.android.db:library:0.13.2'
+
+    compile 'com.github.tajchert:nammu:1.1.1'
+
+    compile 'com.android.support:design:24.2.1'
 }

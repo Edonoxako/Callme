@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * Created by Eugene on 23.07.2016.
+ *
+ * Bridge between view and business logic
  */
 public class ContactPresenter implements IContactLoader.ContactsCallback, IContactLoader.NumbersCallback {
     private IContactView contactView;
