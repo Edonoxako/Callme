@@ -36,7 +36,7 @@ public class FlowManager implements INumberQualifier.Callback {
 
     private void makeAskRequest(RequestType flowType, String number) {
         String request = builder.buildRequest(flowType, number);
-        phone.makeRequest(request);
+        if (request != null) phone.makeRequest(request);
     }
 
     private void throwIfNumbersIsEmpty(List<String> numbers) {

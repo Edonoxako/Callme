@@ -83,6 +83,15 @@ public class WhenFlowStarted {
     }
 
     @Test
+    public void shouldNotMakeAnyRequestIfItIsNotBuilt() throws Exception {
+        when(requestBuilder.buildRequest(any(RequestType.class), any(String.class))).thenReturn(null);
+
+        flowManager.startAskFlow(RequestType.CALL, Collections.singletonList("11231231234"));
+
+        verify(phone, never()).makeRequest(anyString());
+    }
+
+    @Test
     public void shouldCreateAskForCallRequestWhenUserWithManyNumbersAskingForCall() throws Exception {
         flowManager.startAskFlow(RequestType.CALL, Arrays.asList("123", "123"));
         flowManager.onQualifiedNumber("123");

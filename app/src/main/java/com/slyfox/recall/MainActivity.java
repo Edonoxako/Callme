@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +21,9 @@ import com.slyfox.recall.domain.permissions.PermissionsPresenterProxy;
 import com.slyfox.recall.list.ContactAdapterDelegate;
 import com.slyfox.recall.list.ContactListAdapter;
 import com.slyfox.recall.manager.DialogQualifier;
+import com.slyfox.recall.manager.handler.ExceptionHandler;
+import com.slyfox.recall.manager.operator.MobileCodesRepository;
+import com.slyfox.recall.manager.operator.MobileOperatorQualifier;
 import com.slyfox.recall.manager.permissions.DynamicPermissionManager;
 import com.slyfox.recall.manager.Phone;
 import com.slyfox.recall.manager.loading.ContactLoadingManager;
@@ -56,7 +60,13 @@ public class MainActivity extends AppCompatActivity implements
         //Create and init presenter
         ContactLoadingManager contactManager = new ContactLoadingManager(this);
         INumberQualifier qualifier = DialogQualifier.create(getSupportFragmentManager());
-        FlowManager flowManager = new FlowManager(new AskingRequestBuilder(), qualifier, new Phone(this));
+
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        MobileOperatorQualifier operatorQualifier = new MobileOperatorQualifier(telephonyManager);
+        MobileCodesRepository codesRepository = new MobileCodesRepository();
+        ExceptionHandler exceptionHandler = new ExceptionHandler(this);
+        FlowManager flowManager = new FlowManager(new AskingRequestBuilder(operatorQualifier, codesRepository, exceptionHandler), qualifier, new Phone(this));
+
         ContactPresenter contactPresenter = new ContactPresenter(this, contactManager, flowManager);
         presenter = new PermissionsPresenterProxy(contactPresenter, new DynamicPermissionManager(this, activityView), this);
 
